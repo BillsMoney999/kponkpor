@@ -1,0 +1,28 @@
+=== Kpon Kpor Full Code - Upload as kponkpor.zip or paste folder by folder ===
+
+client/package.json
+{
+  "name": "kponkpor",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": { "dev": "vite", "build": "vite build" },
+  "dependencies": { "react": "^18.2.0", "react-dom": "^18.2.0", "react-router-dom": "^6.22.0", "axios": "^1.6.0" },
+  "devDependencies": { "@vitejs/plugin-react": "^4.0.0", "vite": "^5.0.0", "tailwindcss": "^3.4.0" }
+}
+
+client/index.html
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Kpon Kpor – Accra</title></head><body class="bg-black text-white"><div id="root"></div><script type="module" src="/src/main.jsx"></script></body></html>
+
+client/src/main.jsx
+import React from 'react'; import ReactDOM from 'react-dom/client'; import App from './App.jsx'; ReactDOM.createRoot(document.getElementById('root')).render(<React.StrictMode><App /></React.StrictMode>)
+
+client/src/App.jsx
+import { Link } from "react-router-dom"; export default function App() { return (<div className="min-h-screen bg-gradient-to-b from-green-900 to-black text-white text-center py-20 px-6"><h1 className="text-6xl font-black mb-4">Kpon Kpor</h1><p className="text-2xl mb-12">Real work in Accra • No middleman</p><div className="space-y-8 max-w-md mx-auto"><Link to="/register?type=worker" className="block bg-green-600 py-10 rounded-2xl text-3xl font-bold">I’m a Worker → Find Jobs</Link><Link to="/register?type=contractor" className="block bg-orange-600 py-10 rounded-2xl text-3xl font-bold">I’m a Contractor → Hire Now</Link></div></div>); }
+
+server/server.js
+require("dotenv").config(); const express = require("express"); const mongoose = require("mongoose"); const cors = require("cors"); const bcrypt = require("bcrypt"); const app = express(); app.use(cors()); app.use(express.json()); mongoose.connect(process.env.MONGO_URI || "your-mongo-here"); const User = mongoose.model("User", new mongoose.Schema({name:String,phone:{type:String,unique:true},password:String,type:String})); app.post("/api/register", async (req, res) => { const { name, phone, password, type } = req.body; const hashed = await bcrypt.hash(password, 10); try { await User.create({ name, phone, password: hashed, type }); res.json({success:true}); } catch (e) { res.status(400).json({error:"Phone exists"}); }}); app.listen(process.env.PORT || 5000, () => console.log("Kpon Kpor running"));
+
+README.md
+# Kpon Kpor – Accra Construction Jobs Platform
+Live: https://kponkpor.com | Currency: GHS | Made for Ghana
